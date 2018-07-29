@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/mylist.css">
+    <script src="js/aws-cognito-sdk.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="js/config.js"></script>
+    <link rel="icon" href="favicon.png">
+</head>
+
+<body>
+    <div>
+        <div>
+            <form name="confirm">
+                <fieldset>
+                    <input type="text" placeholder="e-mail" class="inputfront" name="name" />
+                    <input type="text" placeholder="RegistrationCode" class="inputfront" name="clientcode" />
+                    <div>
+                        <input type="button" onclick="check(this.form)" class="mainbutton" value="Confirm" />
+                    </div>
+                    <div>
+                        <input type="button" class="mainbutton" value="Home" onclick="window.location.href='index.html'" />
+                    </div>
+                </fieldset>
+            </form>
+            <confirmnewuser class="none" id="confirmnewuser">
+            </confirmnewuser>
+        </div>
+        <script src="js/confirm.js"></script>
+    </div>
+</body>
+
+</html>

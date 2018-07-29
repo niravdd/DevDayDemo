@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="css/mylist.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/aws-cognito-sdk.min.js"></script>
+  <script src="js/amazon-cognito-identity.min.js"></script>
+  <script src="js/config.js"></script>
+  <link rel="icon" href="favicon.png">
+ <link rel="stylesheet" href="css/font-awesome.min.css">
+</head>
+
+<body>
+  <div id="myDIV" class="header">
+    <h2>
+        My ToDo List
+    </h2>
+    <input type="text" id="myInput" placeholder="What todo..." onkeypress="searchKeyPress(event)">
+    <span onclick="newElement()" id= "addbutton" class="addBtn">Add</span>
+    <span onclick="logout()" id= "logoutbutton" class="addBtn">Exit</span>
+  </div>
+  <ul id="myUL">
+
+  </ul>
+
+<script src="js/mylist.js"> </script>
+
+
+</body>
+</html>

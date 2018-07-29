@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/mylist.css">
+    <script src="js/aws-cognito-sdk.min.js"></script>
+    <script src="js/amazon-cognito-identity.min.js"></script>
+    <script src="js/config.js"></script>
+    <link rel="icon" href="favicon.png">
+    <link href="apple-touch-icon1.png" rel="apple-touch-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Sign-in or Sign-up to create your task list now." />
+    <meta name="author" content="Craig Gunson/Nirav Doshi" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>my todo list</title>
+</head>
+
+<body>
+    <div>
+        <div class="piccontainer">
+            <div class="centered">
+                <br>mylist
+                <br>
+                <p> create your free task list now </p>
+                <div>
+                    <form name="login">
+                        <fieldset>
+                            <input type="email" name="name" class="inputfront" placeholder="Email" />
+                            <input type="password" name="pass" class="inputfront" placeholder="Password" />
+                            <div>
+                                <input type="button" class="mainbutton" onclick="check(this.form)" value="Logon" />
+                            </div>
+                            <div>
+                                <input type="button" class="mainbutton" value="Register" onclick="window.location.href='register.html'" />
+                            </div>
+                            <div>
+                                <input type="button" class="mainbutton" value="Confirm" onclick="window.location.href='confirm.html'" />
+                            </div>
+                        </fieldset>
+                    </form>
+                    <creds class="none" id="creds">
+                    </creds>
+                    <br>
+                    <idtoken class="none" id="idtoken"> </idtoken>
+                    <br>
+                    <acctoken class="none" id="acctoken"> </acctoken>
+                    <br>
+                </div>
+                <script src="js/logon.js"></script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

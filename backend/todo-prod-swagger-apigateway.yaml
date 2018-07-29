@@ -1,0 +1,183 @@
+---
+swagger: "2.0"
+info:
+  version: "2017-08-22T05:53:41Z"
+  title: "todo"
+host: "jznmhv5sk4.execute-api.ap-southeast-2.amazonaws.com"
+basePath: "/prod"
+schemes:
+- "https"
+paths:
+  /create:
+    post:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "todo"
+        required: true
+        schema:
+          $ref: "#/definitions/todo"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Success"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      security:
+      - devdaydemo: []
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:505314836537:function:dynamoupdate/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"message\"\
+                \ : \"item created\"\n}"
+        passthroughBehavior: "never"
+        httpMethod: "POST"
+        requestTemplates:
+          application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"operation\"\
+            : \"create\",\n  \"tableName\" : \"todo\",\n  \"payload\": {\n      \"\
+            Item\" : {\n          \"userId\" : \"$context.authorizer.claims.sub\"\
+            ,\n          \"todoid\" : \"$inputRoot.todoid\",\n          \"workitem\"\
+            \ : [\n            #foreach($elem in $inputRoot.workitem)\n\n        \
+            \          \"$elem\"\n                  #if($foreach.hasNext),#end\n\n\
+            \             #end\n                    ]\n\n  }\n  }\n}"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
+  /read:
+    get:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      security:
+      - devdaydemo: []
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:ap-southeast-2:lambda:path/2015-03-31/functions/arn:aws:lambda:ap-southeast-2:505314836537:function:dynamoupdate/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: "\n{\n\"workitem\" : $input.json('Item.workitem'),\n\
+                \"todoid\" : $input.json('$.Item.todoid')\n\n}"
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        requestTemplates:
+          application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"operation\"\
+            : \"read\",\n  \"payload\": {\n      \"Key\" : {\n          \"userId\"\
+            \ : \"$context.authorizer.claims.sub\"}\n  },\n  \"tableName\" : \"todo\"\
+            \n}\n"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+    options:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
+securityDefinitions:
+  devdaydemo:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+    x-amazon-apigateway-authtype: "cognito_user_pools"
+    x-amazon-apigateway-authorizer:
+      providerARNs:
+      - "arn:aws:cognito-idp:ap-southeast-2:505314836537:userpool/ap-southeast-2_jfeAGTWAH"
+      type: "cognito_user_pools"
+definitions:
+  todo:
+    type: "object"
+    required:
+    - "todoid"
+    - "workitem"
+    properties:
+      todoid:
+        type: "string"
+      workitem:
+        type: "array"
+        items:
+          type: "string"
+    title: "todo Create Model"
+  Empty:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+    title: "Error Schema"
+  Success:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+    title: "Success Schema"
